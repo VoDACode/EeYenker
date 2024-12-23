@@ -1,0 +1,5 @@
+<h2>Items:</h2>
+
+{{ range $item := .items }}
+{{ template "item" $item }}
+{{ end }}

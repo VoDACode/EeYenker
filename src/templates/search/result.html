@@ -1,0 +1,9 @@
+{{define "search.result"}}
+<div class="search-result">
+    <div class="search-result-list">
+        {{range $index, $element := .result.Items}}
+        {{template "search.item" $element}}
+        {{end}}
+    </div>
+</div>
+{{end}}

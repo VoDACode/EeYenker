@@ -1,0 +1,19 @@
+<!-- src/templates/layout.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ .title }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Аналітична платформа</h1>
+    </header>
+    <main>
+        {{ block "content" . }}{{ end }}
+    </main>
+    <footer>
+        <p>&copy; 2024 Аналітична платформа</p>
+    </footer>
+</body>
+</html>
