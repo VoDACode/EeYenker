@@ -1,9 +1,40 @@
 {{define "search.result"}}
+<link rel="stylesheet" href="/static/css/games.css">
 <div class="search-result">
-    <div class="search-result-list">
-        {{range $index, $element := .result.Items}}
-        {{template "search.item" $element}}
-        {{end}}
+    <div class="selected-game-info">
+        <h2 id="gameName">Назва гри</h2>
+        <p id="gamePrice">Ціна: 0.00</p>
     </div>
+    <div class="game-carousel" id="gameCarousel">
+        <div class="game-grid" id="gameGrid">
+            {{range $index, $element := .result.Items}}
+            <div class="game-card {{if eq $index 0}}selected{{end}}" data-index="{{$index}}" 
+                 data-name="{{.Name}}" data-price="{{if eq .Price.Final 0.0}}Безкоштовно{{else}}{{.Price.Final}} {{.Price.Currency}}{{end}}">
+                <img src="{{.TinyImage}}" alt="{{.Name}}" />
+            </div>
+            {{end}}
+        </div>
+    </div>
+</div>
+<script src="/static/js/games.js"></script>
+{{end}}
+
+{{define "search.item"}}
+<div>
+    <img src="{{.TinyImage}}" alt="{{.Name}}" />
+    <h3>{{.Name}}</h3>
+    <p>Ціна:
+        {{if eq .Price.Final 0.0}}
+        <span>Безкоштовно</span>
+        {{else if ne .Price.Initial .Price.Final}}
+        <span style="text-decoration: line-through;">{{.Price.Initial}}</span>
+        <span>{{.Price.Final}} {{.Price.Currency}}</span>
+        {{else}}
+        <span>{{.Price.Final}} {{.Price.Currency}}</span>
+        {{end}}
+    </p>
+    {{if and (ne .Price.Final 0.0) (ne .Price.Initial .Price.Final)}}
+    <p>Знижка: {{.Price.DiscountPercentage}} %</p>
+    {{end}}
 </div>
 {{end}}

@@ -3,15 +3,16 @@
     <img src="{{.TinyImage}}" alt="{{.Name}}" />
     <h3>{{.Name}}</h3>
     <p>Ціна:
-        {{if ne .Price.Initial .Price.Final}}
+        {{if eq .Price.Final 0.0}}
+        <span>Безкоштовно</span>
+        {{else if ne .Price.Initial .Price.Final}}
         <span style="text-decoration: line-through;">{{.Price.Initial}}</span>
-        <span>{{.Price.Final}}</span>
+        <span>{{.Price.Final}} {{.Price.Currency}}</span>
         {{else}}
-        <span>{{.Price.Initial}}</span>
+        <span>{{.Price.Final}} {{.Price.Currency}}</span>
         {{end}}
-        {{.Price.Currency}}
     </p>
-    {{if ne .Price.Initial .Price.Final}}
+    {{if and (ne .Price.Final 0.0) (ne .Price.Initial .Price.Final)}}
     <p>Знижка: {{.Price.DiscountPercentage}} %</p>
     {{end}}
 </div>
