@@ -33,7 +33,6 @@ type SearchResult struct {
 }
 
 func Search(c *gin.Context) {
-
 	query := c.Query("name")
 	searchURL := fmt.Sprintf("https://store.steampowered.com/api/storesearch/?term=%s&cc=ua", url.QueryEscape(query))
 

@@ -23,7 +23,7 @@ func main() {
 
 	// Виведення адреси сервера в консоль із підсвіткою
 	port := "8070"
-	url := fmt.Sprintf("http://localhost:%s", port)
+	url := fmt.Sprintf("http://localhost:%s/", port)
 
 	// Використовуємо кольоровий текст
 	c := color.New(color.FgHiGreen, color.Bold) // Високий зелений текст, жирний
