@@ -1,0 +1,7 @@
+{
+  "devDependencies": {
+    "sass": "^1.83.1",
+    "sass-loader": "^16.0.4",
+    "webpack": "^5.97.1"
+  }
+}

@@ -1,0 +1,84 @@
+.game-bg-counter-strike-2 {
+    background: url('/static/images/backgrounds/counter-strike-2.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-marvel-rivals {
+    background: url('/static/images/backgrounds/marvel-rivals.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-path-of-exile-2 {
+    background: url('/static/images/backgrounds/path-of-exile-2.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-dota-2 {
+    background: url('/static/images/backgrounds/dota-2.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-warframe {
+    background: url('/static/images/backgrounds/warframe.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-pubg-battlegrounds {
+    background: url('/static/images/backgrounds/pubg-battlegrounds.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-grand-theft-auto-v {
+    background: url('/static/images/backgrounds/grand-theft-auto-v.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-helldivers-2 {
+    background: url('/static/images/backgrounds/helldivers-2.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-nba-2k25 {
+    background: url('/static/images/backgrounds/nba-2k25.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-baldurs-gate-3 {
+    background: url('/static/images/backgrounds/baldurs-gate-3.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-counter-strike-2,
+.game-bg-marvel-rivals,
+.game-bg-path-of-exile-2,
+.game-bg-dota-2,
+.game-bg-warframe,
+.game-bg-pubg-battlegrounds,
+.game-bg-grand-theft-auto-v,
+.game-bg-helldivers-2,
+.game-bg-nba-2k25,
+.game-bg-baldurs-gate-3 {
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+}
+
+.game-bg-counter-strike-2::before,
+.game-bg-marvel-rivals::before,
+.game-bg-path-of-exile-2::before,
+.game-bg-dota-2::before,
+.game-bg-warframe::before,
+.game-bg-pubg-battlegrounds::before,
+.game-bg-grand-theft-auto-v::before,
+.game-bg-helldivers-2::before,
+.game-bg-nba-2k25::before,
+.game-bg-baldurs-gate-3::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}

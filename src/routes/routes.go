@@ -1,14 +1,13 @@
 package routes
 
 import (
-	"EeYenker/src/controllers"
+	// "EeYenker/src/controllers"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func RegisterRoutes(r *gin.Engine) {
-
 	r.GET("/test", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "items.go.tmpl", gin.H{
 			"cout":  5,
@@ -23,5 +22,5 @@ func RegisterRoutes(r *gin.Engine) {
 }
 
 func RegisterAPI(r *gin.Engine) {
-	r.GET("/", controllers.Search)
+	// r.GET("/", controllers.Search)
 }

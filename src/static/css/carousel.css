@@ -1,0 +1,69 @@
+.game-carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px;
+    margin-top: 150px;
+    cursor: pointer;
+    width: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    z-index: 10;
+}
+
+.game-carousel::-webkit-scrollbar {
+    display: none;
+    scroll-behavior: smooth;
+
+}
+
+.search-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.game-grid {
+    display: flex;
+    gap: 100px;
+    position: relative;
+    bottom: 0;
+    transition: transform 0.3s ease-in-out;
+}
+
+.game-card {
+    position: relative;
+    flex: 0 0 200px;
+    height: 100%;
+    scroll-snap-align: center;
+    transition: transform 0.3s, opacity 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    text-align: center;
+    opacity: 1;
+    transform: translateX(0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.game-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    transition: transform 0.3s;
+    object-fit: cover;
+    z-index: 2;
+}
+
+.game-card.selected {
+    transform: scale(1.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.game-card.hidden {
+    opacity: 0;
+    transform: translateX(100%);
+}

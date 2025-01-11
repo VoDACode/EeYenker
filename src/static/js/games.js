@@ -53,10 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
             .toLowerCase() // Переводимо в нижній регістр
             .replace(/\s+/g, "-") // Замінюємо пробіли на дефіси
             .replace(/[^a-z0-9-]/g, ""); // Видаляємо всі символи, крім букв, цифр і дефісів
-    
+
         document.body.className = "search-result"; // Скидаємо попередній фон
         document.body.classList.add(`game-bg-${formattedName}`); // Додаємо новий фон
-    };    
+    };
 
     // Змінюємо виклик у setGameDetails
     const setGameDetails = (index) => {
@@ -65,6 +65,34 @@ document.addEventListener("DOMContentLoaded", () => {
         gamePriceElement.textContent = `Ціна: ${card.dataset.price}`;
         changeBackground(card.dataset.name);
     };
+
+    async function fetchAggregatedData(appId, from, to, detail) {
+        const baseUrl = '/api/aggregated_data';
+        const params = new URLSearchParams({
+            appid: appId,
+            from: from,
+            to: to,
+            detail: detail,
+        });
+
+        try {
+            const response = await fetch(`${baseUrl}?${params.toString()}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching aggregated data:', error);
+            throw error;
+        }
+    }
+
+    // Використання функції
+    fetchAggregatedData('730', '2025-01-01T00:00:00', '2025-01-10T23:59:59', 'day')
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+
 
     initCarousel();
 });

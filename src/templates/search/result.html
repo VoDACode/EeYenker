@@ -1,22 +1,37 @@
 {{define "search.result"}}
-<link rel="stylesheet" href="/static/css/games.css">
+<title>EeYenker</title>
+<link rel="stylesheet" href="/static/css/carousel.css">
+<link rel="stylesheet" href="/static/css/game-backgrounds.css">
+<link rel="stylesheet" href="/static/css/header.css">
+<link rel="stylesheet" href="/static/css/selected-game-info.css">
+<link rel="stylesheet" href="/static/css/arrow.css">
+<link rel="stylesheet" href="/static/css/global.css">
 <div class="search-result">
+    <header class="page-header">
+        <h1><span class="team-name">EeYenker</span> представляє зібрану гейм аналітику</h1>
+    </header>
     <div class="selected-game-info">
         <h2 id="gameName">Назва гри</h2>
         <p id="gamePrice">Ціна: 0.00</p>
     </div>
     <div class="game-carousel" id="gameCarousel">
         <div class="game-grid" id="gameGrid">
-            {{range $index, $element := .result.Items}}
-            <div class="game-card {{if eq $index 0}}selected{{end}}" data-index="{{$index}}" 
-                 data-name="{{.Name}}" data-price="{{if eq .Price.Final 0.0}}Безкоштовно{{else}}{{.Price.Final}} {{.Price.Currency}}{{end}}">
-                <img src="{{.TinyImage}}" alt="{{.Name}}" />
+            {{range $index, $element := .games}}
+            <div class="game-card {{if eq $index 0}}selected{{end}}" data-index="{{$index}}" data-name="{{.Data.Name}}"
+                data-price="{{if .Data.IsFree}}Безкоштовно{{else}}{{.Data.Price.Final}} {{.Data.Price.Currency}}{{end}}">
+                <img src="{{.Data.CardImage}}" alt="{{.Data.Name}}" />
             </div>
             {{end}}
         </div>
     </div>
+    <div class="arrow-block">
+        <p class="show-more">Show More</p>
+        <div class="arrow arrow-first"></div>
+        <div class="arrow arrow-second"></div>
+    </div>
 </div>
 <script src="/static/js/games.js"></script>
+<script src="/static/js/scroll.js"></script>
 {{end}}
 
 {{define "search.item"}}
