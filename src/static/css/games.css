@@ -100,13 +100,43 @@ body{
     background-size: cover;
 }
 
-.game-bg-0, .game-bg-1, .game-bg-2 {
+.game-bg-3 {
+    background: url('/static/images/backgrounds/game-bg-3.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-4 {
+    background: url('/static/images/backgrounds/game-bg-4.jpg') no-repeat center center;
+    background-size: cover;
+}
+.game-bg-5 {
+    background: url('/static/images/backgrounds/game-bg-5.jpg') no-repeat center center;
+    background-size: cover;
+}
+.game-bg-6 {
+    background: url('/static/images/backgrounds/game-bg-6.jpg') no-repeat center center;
+    background-size: cover;
+}
+.game-bg-7 {
+    background: url('/static/images/backgrounds/game-bg-7.jpg') no-repeat center center;
+    background-size: cover;
+}
+.game-bg-8 {
+    background: url('/static/images/backgrounds/game-bg-8.jpg') no-repeat center center;
+    background-size: cover;
+}
+.game-bg-9 {
+    background: url('/static/images/backgrounds/game-bg-9.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+.game-bg-0, .game-bg-1, .game-bg-2, .game-bg-3, .game-bg-4, .game-bg-5, .game-bg-6, .game-bg-7, .game-bg-8, .game-bg-9 {
     background-size: cover;
     background-position: center center;
     position: relative; /* Додаємо relative для контейнера */
 }
 
-.game-bg-0::before, .game-bg-1::before, .game-bg-2::before {
+.game-bg-0::before, .game-bg-1::before, .game-bg-2::before, .game-bg-3::before, .game-bg-4::before, .game-bg-5::before, .game-bg-6::before, .game-bg-7::before, .game-bg-8::before, .game-bg-9::before {
     content: "";
     position: absolute;
     top: 0;
@@ -116,6 +146,3 @@ body{
     background: rgba(0, 0, 0, 0.3); /* Чорний з 30% прозорістю */
     z-index: 1; /* Перекриває фон */
 }
-
-
-/* Додати стилі для інших ігор */
