@@ -85,58 +85,63 @@ body{
     transform: translateX(100%);
 }
 
-.game-bg-0 {
-    background: url('/static/images/backgrounds/game-bg-0.jpg') no-repeat center center;
+.game-bg-counter-strike-2 {
+    background: url('/static/images/backgrounds/counter-strike-2.jpg') no-repeat center center;
     background-size: cover;
 }
 
-.game-bg-1 {
-    background: url('/static/images/backgrounds/game-bg-1.jpg') no-repeat center center;
+.game-bg-marvel-rivals {
+    background: url('/static/images/backgrounds/marvel-rivals.jpg') no-repeat center center;
     background-size: cover;
 }
 
-.game-bg-2 {
-    background: url('/static/images/backgrounds/game-bg-2.jpg') no-repeat center center;
+.game-bg-path-of-exile-2 {
+    background: url('/static/images/backgrounds/path-of-exile-2.jpg') no-repeat center center;
     background-size: cover;
 }
 
-.game-bg-3 {
-    background: url('/static/images/backgrounds/game-bg-3.jpg') no-repeat center center;
+.game-bg-dota-2 {
+    background: url('/static/images/backgrounds/dota-2.jpg') no-repeat center center;
     background-size: cover;
 }
 
-.game-bg-4 {
-    background: url('/static/images/backgrounds/game-bg-4.jpg') no-repeat center center;
+.game-bg-warframe {
+    background: url('/static/images/backgrounds/warframe.jpg') no-repeat center center;
     background-size: cover;
 }
-.game-bg-5 {
-    background: url('/static/images/backgrounds/game-bg-5.jpg') no-repeat center center;
+.game-bg-pubg-battlegrounds {
+    background: url('/static/images/backgrounds/pubg-battlegrounds.jpg') no-repeat center center;
     background-size: cover;
 }
-.game-bg-6 {
-    background: url('/static/images/backgrounds/game-bg-6.jpg') no-repeat center center;
+.game-bg-grand-theft-auto-v {
+    background: url('/static/images/backgrounds/grand-theft-auto-v.jpg') no-repeat center center;
     background-size: cover;
 }
-.game-bg-7 {
-    background: url('/static/images/backgrounds/game-bg-7.jpg') no-repeat center center;
+.game-bg-helldivers-2 {
+    background: url('/static/images/backgrounds/helldivers-2.jpg') no-repeat center center;
     background-size: cover;
 }
-.game-bg-8 {
-    background: url('/static/images/backgrounds/game-bg-8.jpg') no-repeat center center;
+.game-bg-nba-2k25 {
+    background: url('/static/images/backgrounds/nba-2k25.jpg') no-repeat center center;
     background-size: cover;
 }
-.game-bg-9 {
-    background: url('/static/images/backgrounds/game-bg-9.jpg') no-repeat center center;
+.game-bg-baldurs-gate-3 {
+    background: url('/static/images/backgrounds/baldurs-gate-3.jpg') no-repeat center center;
     background-size: cover;
 }
 
-.game-bg-0, .game-bg-1, .game-bg-2, .game-bg-3, .game-bg-4, .game-bg-5, .game-bg-6, .game-bg-7, .game-bg-8, .game-bg-9 {
+.game-bg-counter-strike-2, .game-bg-marvel-rivals, .game-bg-path-of-exile-2, 
+.game-bg-dota-2, .game-bg-warframe, .game-bg-pubg-battlegrounds, .game-bg-grand-theft-auto-v, 
+.game-bg-helldivers-2, .game-bg-nba-2k25, .game-bg-baldurs-gate-3 {
     background-size: cover;
     background-position: center center;
     position: relative; /* Додаємо relative для контейнера */
 }
 
-.game-bg-0::before, .game-bg-1::before, .game-bg-2::before, .game-bg-3::before, .game-bg-4::before, .game-bg-5::before, .game-bg-6::before, .game-bg-7::before, .game-bg-8::before, .game-bg-9::before {
+.game-bg-counter-strike-2::before, .game-bg-marvel-rivals::before, .game-bg-path-of-exile-2::before, 
+.game-bg-dota-2::before, .game-bg-warframe::before, .game-bg-pubg-battlegrounds::before, 
+.game-bg-6::before, .game-bg-7::before, .game-bg-8::before, .game-bg-9::before, .game-bg-grand-theft-auto-v::before,
+.game-bg-helldivers-2::before, .game-bg-nba-2k25::before, .game-bg-baldurs-gate-3::before {
     content: "";
     position: absolute;
     top: 0;

@@ -47,18 +47,23 @@ document.addEventListener("DOMContentLoaded", () => {
         setGameDetails(index);
     };
 
-    // Встановлення даних гри
+    // Функція для зміни фону
+    const changeBackground = (name) => {
+        const formattedName = name
+            .toLowerCase() // Переводимо в нижній регістр
+            .replace(/\s+/g, "-") // Замінюємо пробіли на дефіси
+            .replace(/[^a-z0-9-]/g, ""); // Видаляємо всі символи, крім букв, цифр і дефісів
+    
+        document.body.className = "search-result"; // Скидаємо попередній фон
+        document.body.classList.add(`game-bg-${formattedName}`); // Додаємо новий фон
+    };    
+
+    // Змінюємо виклик у setGameDetails
     const setGameDetails = (index) => {
         const card = gameCards[index % gameCards.length]; // Зациклення індекса
         gameNameElement.textContent = card.dataset.name;
         gamePriceElement.textContent = `Ціна: ${card.dataset.price}`;
-        changeBackground(index);
-    };
-
-    // Функція для зміни фону
-    const changeBackground = (index) => {
-        document.body.className = "search-result";
-        document.body.classList.add(`game-bg-${index % gameCards.length}`);
+        changeBackground(card.dataset.name);
     };
 
     initCarousel();
