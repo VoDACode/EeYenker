@@ -1,20 +1,20 @@
+/* Карусель (не змінено, просто для контексту) */
 .game-carousel {
     display: flex;
     overflow-x: auto;
     gap: 10px;
     padding: 10px;
-    margin-top: 150px;
+    margin-top: 380px;
     cursor: pointer;
     width: 100%;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    z-index: 10;
+    z-index: 5;
 }
 
 .game-carousel::-webkit-scrollbar {
     display: none;
     scroll-behavior: smooth;
-
 }
 
 .search-result {
@@ -22,6 +22,7 @@
     flex-direction: column;
     align-items: center;
     padding-top: 20px;
+    z-index: 5;
 }
 
 .game-grid {

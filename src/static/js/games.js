@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameCarousel = document.getElementById("gameCarousel");
     const gameGrid = document.getElementById("gameGrid");
     const gameCards = Array.from(document.querySelectorAll(".game-card"));
-    const gameNameElement = document.getElementById("gameName");
+    const gameNameElements = document.querySelectorAll(".gameName");
     const gamePriceElement = document.getElementById("gamePrice");
 
     // Ініціалізація
@@ -54,14 +54,19 @@ document.addEventListener("DOMContentLoaded", () => {
             .replace(/\s+/g, "-") // Замінюємо пробіли на дефіси
             .replace(/[^a-z0-9-]/g, ""); // Видаляємо всі символи, крім букв, цифр і дефісів
 
-        document.body.className = "search-result"; // Скидаємо попередній фон
-        document.body.classList.add(`game-bg-${formattedName}`); // Додаємо новий фон
+        const searchResultElement = document.querySelector('.search-result'); // Знаходимо контейнер
+        searchResultElement.classList.remove(...searchResultElement.classList); // Скидаємо всі попередні класи
+        searchResultElement.classList.add('search-result', `game-bg-${formattedName}`); // Додаємо новий фон
     };
+
 
     // Змінюємо виклик у setGameDetails
     const setGameDetails = (index) => {
         const card = gameCards[index % gameCards.length]; // Зациклення індекса
-        gameNameElement.textContent = card.dataset.name;
+        
+        gameNameElements.forEach((element) => {
+            element.textContent = card.dataset.name;
+        });
         gamePriceElement.textContent = `Ціна: ${card.dataset.price}`;
         changeBackground(card.dataset.name);
     };
