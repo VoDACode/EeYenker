@@ -120,26 +120,33 @@ func getAggregatedData(c *gin.Context) {
 
 	groupFormat := "%Y-%m-%dT%H:00:00" // Default to hourly
 	switch detail {
-	case "12h":
-		groupFormat = "%Y-%m-%dT%H:00:00"
-	case "day":
+	case "h":
+		groupFormat = "%Y-%m-%d %H:00:00"
+	case "d":
 		groupFormat = "%Y-%m-%d"
-	case "week":
+	case "w":
 		groupFormat = "%Y-%W"
-	case "month":
-		groupFormat = "%Y-%m"
-	case "all":
+	case "m":
+		groupFormat = "%Y-%W"
+	case "*":
 		groupFormat = "%Y"
+	default:
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid 'detail' value"})
+		return
 	}
 
 	query := fmt.Sprintf(`
-		SELECT AppId, AVG(Count) as AvgCount, strftime('%s', Datetime) as TimeGroup
-		FROM OnlineHistory
-		WHERE AppId = ? AND Datetime BETWEEN ? AND ?
-		GROUP BY TimeGroup
+	SELECT strftime('%s', Datetime) AS Period,
+	AVG(Count) AS AvgCount
+	FROM OnlineHistory
+	WHERE AppId = ? AND Datetime BETWEEN ? AND ?
+	GROUP BY Period
+	ORDER BY Period
+	LIMIT 10000
 	`, groupFormat)
 
 	rows, err := db.Query(query, appId, fromTime, toTime)
+
 	if err != nil {
 		log.Fatal(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to query data"})
@@ -150,18 +157,17 @@ func getAggregatedData(c *gin.Context) {
 	var results []gin.H
 	for rows.Next() {
 		// print results
-		var appId int
 		var avgCount float64
-		var timeGroup sql.NullString
-		if err := rows.Scan(&appId, &avgCount, &timeGroup); err != nil {
+		var period sql.NullString
+		if err := rows.Scan(&period, &avgCount); err != nil {
 			log.Printf("Failed to scan data: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to scan data"})
 			return
 		}
+		avgCount = float64(int(avgCount*100)) / 100
 		results = append(results, gin.H{
-			"appid":     appId,
 			"avg_count": avgCount,
-			"time":      timeGroup.String,
+			"period":    period.String,
 		})
 	}
 
@@ -253,7 +259,7 @@ func main() {
 
 	// Реєстрація маршрутів
 	r.GET("/", MainPage)
-	r.GET("/api/aggregated_data", getAggregatedData)
+	r.GET("/api/stats", getAggregatedData)
 	r.GET("/favicon.ico", func(c *gin.Context) {
 		c.File("favicon.ico")
 	})
