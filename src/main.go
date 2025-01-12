@@ -16,20 +16,34 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-var db *sql.DB
 var mu sync.Mutex
 
-func initDB() {
-	var err error
-	db, err = sql.Open("sqlite", "steam_data.db")
+func createDBConnection() (*sql.DB, error) {
+	db, err := sql.Open("sqlite", "steam_data_1.db")
 	if err != nil {
-		log.Fatalf("Failed to open database: %v", err)
+		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
+
+	_, err = db.Exec("PRAGMA busy_timeout = 5000;")
+	if err != nil {
+		db.Close()
+		return nil, fmt.Errorf("failed to set busy timeout: %w", err)
+	}
+
+	return db, nil
+}
+
+func initDB() {
+	db, err := createDBConnection()
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+	defer db.Close()
 
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS Apps (
 		Id INTEGER PRIMARY KEY,
 		Name TEXT
-	)`)
+	)`) // Create Apps table
 	if err != nil {
 		log.Fatalf("Failed to create Apps table: %v", err)
 	}
@@ -39,7 +53,7 @@ func initDB() {
 		Count INTEGER,
 		Datetime DATETIME,
 		FOREIGN KEY(AppId) REFERENCES Apps(Id)
-	)`)
+	)`) // Create OnlineHistory table
 	if err != nil {
 		log.Fatalf("Failed to create OnlineHistory table: %v", err)
 	}
@@ -61,6 +75,13 @@ func fetchGameStats(appId int) {
 	}
 
 	if steamResp.Response.Result == 1 {
+		db, err := createDBConnection()
+		if err != nil {
+			log.Printf("Failed to create DB connection: %v", err)
+			return
+		}
+		defer db.Close()
+
 		mu.Lock()
 		_, err = db.Exec("INSERT INTO OnlineHistory (AppId, Count, Datetime) VALUES (?, ?, ?)",
 			appId, steamResp.Response.PlayerCount, time.Now())
@@ -72,6 +93,13 @@ func fetchGameStats(appId int) {
 }
 
 func fetchAndStoreData() {
+	db, err := createDBConnection()
+	if err != nil {
+		log.Printf("Failed to create DB connection: %v", err)
+		return
+	}
+	defer db.Close()
+
 	rows, err := db.Query("SELECT Id FROM Apps")
 	if err != nil {
 		log.Printf("Failed to query apps: %v", err)
@@ -91,10 +119,12 @@ func fetchAndStoreData() {
 }
 
 func startScheduler() {
-	ticker := time.NewTicker(30 * time.Minute)
+	ticker := time.NewTicker(1 * time.Minute)
 	go func() {
 		for range ticker.C {
+			log.Println("Fetching online data...")
 			fetchAndStoreData()
+			log.Println("Done fetching online data.")
 		}
 	}()
 }
@@ -127,13 +157,21 @@ func getAggregatedData(c *gin.Context) {
 	case "w":
 		groupFormat = "%Y-%W"
 	case "m":
-		groupFormat = "%Y-%W"
+		groupFormat = "%Y-%m"
 	case "*":
 		groupFormat = "%Y"
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid 'detail' value"})
 		return
 	}
+
+	db, err := createDBConnection()
+	if err != nil {
+		log.Printf("Failed to create DB connection: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to query data"})
+		return
+	}
+	defer db.Close()
 
 	query := fmt.Sprintf(`
 	SELECT strftime('%s', Datetime) AS Period,
@@ -146,9 +184,8 @@ func getAggregatedData(c *gin.Context) {
 	`, groupFormat)
 
 	rows, err := db.Query(query, appId, fromTime, toTime)
-
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Failed to execute query: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to query data"})
 		return
 	}
@@ -156,7 +193,6 @@ func getAggregatedData(c *gin.Context) {
 
 	var results []gin.H
 	for rows.Next() {
-		// print results
 		var avgCount float64
 		var period sql.NullString
 		if err := rows.Scan(&period, &avgCount); err != nil {
@@ -181,64 +217,25 @@ func MainPage(c *gin.Context) {
 	for _, id := range gameIds {
 		resp, err := http.Get(fmt.Sprintf(url, id))
 		if err != nil {
-			panic(err)
+			log.Printf("Failed to fetch game details for app %d: %v", id, err)
+			continue
 		}
 		defer resp.Body.Close()
 
 		var responseJson map[int]responses.SteamGameResponse
 		if err := json.NewDecoder(resp.Body).Decode(&responseJson); err != nil {
-			panic(err)
+			log.Printf("Failed to decode game details for app %d: %v", id, err)
+			continue
 		}
 
 		result = append(result, responseJson[id])
 		result[len(result)-1].Data.CardImage = "https://cdn.cloudflare.steamstatic.com/steam/apps/" + fmt.Sprint(id) + "/header.jpg"
+		if result[len(result)-1].Data.Price != nil {
+			result[len(result)-1].Data.Price.Initial /= 100
+			result[len(result)-1].Data.Price.Final /= 100
+			result[len(result)-1].Data.Price.DiscountPercentage = (int)(100 - (result[len(result)-1].Data.Price.Final * 100 / result[len(result)-1].Data.Price.Initial))
+		}
 	}
-
-	// query := c.Query("name")
-	// searchURL := fmt.Sprintf("https://store.steampowered.com/api/storesearch/?term=%s&cc=ua", url.QueryEscape(query))
-
-	// resp, err := http.Get(searchURL)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// defer resp.Body.Close()
-
-	// var result responses.SearchResult
-	// if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-	// 	panic(err)
-	// }
-
-	// for i := range result.Items {
-	// 	result.Items[i].HeaderImage = "https://cdn.cloudflare.steamstatic.com/steam/apps/" + fmt.Sprint(result.Items[i].ID) + "/header.jpg"
-	// 	result.Items[i].LibraryImage = "https://cdn.cloudflare.steamstatic.com/steam/apps/" + fmt.Sprint(result.Items[i].ID) + "/library_600x900_2x.jpg"
-	// 	result.Items[i].BigImage = "https://cdn.cloudflare.steamstatic.com/steam/apps/" + fmt.Sprint(result.Items[i].ID) + "/capsule_616x353.jpg"
-	// 	result.Items[i].Price.Initial /= 100
-	// 	result.Items[i].Price.Final /= 100
-	// 	result.Items[i].Price.DiscountPercentage = (int)(100 - (result.Items[i].Price.Final * 100 / result.Items[i].Price.Initial))
-
-	// 	var exists bool
-	// 	mu.Lock()
-	// 	row := db.QueryRow("SELECT EXISTS(SELECT 1 FROM Apps WHERE Id = ?)", result.Items[i].ID)
-	// 	if err := row.Scan(&exists); err != nil {
-	// 		log.Printf("Failed to check existence for app %d: %v", result.Items[i].ID, err)
-	// 		mu.Unlock()
-	// 		continue
-	// 	}
-	// 	mu.Unlock()
-
-	// 	if !exists {
-	// 		mu.Lock()
-	// 		_, err := db.Exec("INSERT INTO Apps (Id, Name) VALUES (?, ?)", result.Items[i].ID, result.Items[i].Name)
-	// 		if err != nil {
-	// 			log.Printf("Failed to insert app %d: %v", result.Items[i].ID, err)
-	// 			mu.Unlock()
-	// 		} else {
-	// 			log.Printf("Inserted app %d: %s", result.Items[i].ID, result.Items[i].Name)
-	// 			mu.Unlock()
-	// 			fetchGameStats(result.Items[i].ID)
-	// 		}
-	// 	}
-	// }
 
 	c.HTML(http.StatusOK, "search.result", gin.H{
 		"games": result,

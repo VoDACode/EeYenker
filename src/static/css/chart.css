@@ -1,0 +1,74 @@
+.chart {
+    background-color: #271c27;
+    border-radius: 12px; /* Закруглені краї */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Легка тінь */
+    padding: 16px; /* Відступи всередині */
+    max-width: 800px; /* Максимальна ширина */
+    margin: 20px auto; /* Вирівнювання по центру */
+    font-family: Arial, sans-serif; /* Красивий шрифт */
+}
+
+.chart-controls {
+    display: flex;
+    gap: 10px; /* Проміжок між елементами */
+    flex-wrap: wrap; /* Перенесення елементів при вузькому екрані */
+    margin-bottom: 20px; /* Відступ від діаграми */
+}
+
+.chart-controls input,
+.chart-controls select {
+    padding: 8px; /* Відступи всередині */
+    border: 1px solid rgb(227, 225, 225); /* Сірий контур */
+    border-radius: 8px; /* Закруглені краї */
+    font-size: 14px; /* Розмір тексту */
+}
+
+.chart-controls input:focus,
+.chart-controls select:focus {
+    outline: none;
+    border-color: #58009c; /* Синій контур при фокусі */
+    box-shadow: 0 0 4px rgba(63, 1, 155, 0.5);/* Легка тінь при фокусі */
+}
+
+.chart-container {
+    position: relative;
+    height: 400px; /* Висота контейнера для canvas */
+    border: 1px solid #1c1c1c; /* Контур навколо canvas */
+    border-radius: 8px; /* Закруглені краї */
+    overflow: hidden; /* Приховує вихідні частини */
+}
+
+canvas {
+    display: block;
+    max-width: 100%;
+    height: auto; /* Займає весь доступний простір */
+}
+
+input, select {
+    padding: 12px 16px; /* Збільшений внутрішній відступ для кращого вигляду */
+    border-radius: 8px; /* Закруглені кути */
+    border: 1px solid #1c1c1c; /* Тонка рамка */
+    font-size: 16px; /* Більший розмір тексту */
+    color: #333; /* Темніший текст */
+    background-color: rgb(213, 213, 213); /* Світло-сірий фон */
+    transition: all 0.3s ease; /* Анімація для ховер-ефектів */
+    margin-right: 10px;
+}
+
+input:focus, select:focus {
+    outline: none; /* Забираємо стандартний обведення */
+    border-color: #58009c; /* Підсвічування рамки */
+    box-shadow: 0 0 5px rgba(63, 1, 155, 0.5); /* Світіння при фокусі */
+}
+
+select {
+    appearance: none; /* Приховуємо стандартний вигляд стрілки у селекті */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    cursor: pointer; /* Вказуємо, що це інтерактивний елемент */
+}
+
+select:hover, input:hover {
+    background-color: rgb(227, 225, 225); /* Змінюємо фон при наведенні */
+}

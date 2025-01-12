@@ -93,6 +93,7 @@ body {
     color: rgb(213, 213, 213);;
 	background-color: transparent;
 	padding: 0.2em 1.5em;
+	display: none;
 }
 
 .move-btn:first-child {border-right: none;}

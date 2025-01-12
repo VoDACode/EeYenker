@@ -5,8 +5,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameNameElements = document.querySelectorAll(".gameName");
     const gamePriceElement = document.getElementById("gamePrice");
 
+    const onlineChartElement = document.getElementById("online-chart");
+    const onlineChartFromElement = document.getElementById("online-chart-from");
+    const onlineChartToElement = document.getElementById("online-chart-to");
+    const onlineChartPeriodElement = document.getElementById("online-chart-period");
+
+    let chart = null;
+
+    let selectedGameId = 730;
+
     // Ініціалізація
     const initCarousel = () => {
+        onlineChartFromElement.addEventListener('change', updateChart);
+        onlineChartToElement.addEventListener('change', updateChart);
+        onlineChartPeriodElement.addEventListener('change', updateChart);
+        selectedGameId = games[0].data.steam_appid;
+
+        console.log('Game by default:', selectedGameId);
+        onlineChartFromElement.value = onlineChartFromElement.value || new Date().toISOString().split('T')[0];
+        onlineChartToElement.value = onlineChartToElement.value || new Date().toISOString().split('T')[0];
+        onlineChartPeriodElement.value = onlineChartPeriodElement.value || 'h';
+        updateChart();
+
         if (gameCards.length > 0) {
             setGameDetails(0);
         }
@@ -15,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         gameCards.forEach((card, index) => {
             card.addEventListener("click", () => {
                 selectCard(card, index);
+                console.log(card.dataset.id);
             });
         });
 
@@ -44,7 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectCard = (card, index) => {
         document.querySelector(".game-card.selected")?.classList.remove("selected");
         card.classList.add("selected");
+        selectedGameId = games[index % games.length].data.steam_appid;
         setGameDetails(index);
+        updateChart();
     };
 
     // Функція для зміни фону
@@ -71,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
         // Оновлення опису
         const detailedDescriptionElement = document.getElementById("gameDetailedDescription");
-        detailedDescriptionElement.innerHTML = card.dataset.description || "Опис гри недоступний.";
+        detailedDescriptionElement.innerHTML = gameInfo.data.detailed_description || "Опис гри недоступний.";
     
         changeBackground(card.dataset.name);
     
@@ -94,8 +117,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };    
 
-    async function fetchAggregatedData(appId, from, to, detail) {
-        const baseUrl = '/api/aggregated_data';
+    function updateChart() {
+        const from = new Date(onlineChartFromElement.value).toISOString().split('.')[0];
+        const to = new Date(onlineChartToElement.value).toISOString().split('.')[0];
+        const detail = onlineChartPeriodElement.value;
+
+        fetchGameStats(selectedGameId, from, to, detail)
+            .then(data => initChart(data))
+            .catch(error => console.error(error));
+    }
+
+    async function fetchGameStats(appId, from, to, detail) {
+        const baseUrl = '/api/stats';
         const params = new URLSearchParams({
             appid: appId,
             from: from,
@@ -116,11 +149,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Використання функції
-    fetchAggregatedData('730', '2025-01-01T00:00:00', '2025-01-10T23:59:59', 'day')
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
+    function initChart(data) {
+        if (!data || data.length === 0) {
+            console.error('No data to display');
+            return;
+        }
 
+        if (chart) {
+            chart.destroy();
+        }
+
+        const ctx = onlineChartElement.getContext('2d');
+        console.log(data);
+        chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.map((item) => item.period),
+                datasets: [{
+                    label: 'Гравців онлайн',
+                    data: data.map((item) => item.avg_count),
+                    borderColor: '#00bdd6',
+                    backgroundColor: '#00bdd6',
+                    tension: 0.2,
+                }],
+            },
+        });
+    }
 
     initCarousel();
 });

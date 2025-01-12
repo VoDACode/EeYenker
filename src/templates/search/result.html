@@ -9,10 +9,21 @@
 <link rel="stylesheet" href="/static/css/info-section.css">
 <link rel="stylesheet" href="/static/css/scrollbar.css">
 <link rel="stylesheet" href="/static/css/gallery.css">
+<link rel="stylesheet" href="/static/css/particles.css">
+<link rel="stylesheet" href="/static/css/chart.css">
 
 <header class="page-header">
     <h1><span class="team-name">EeYenker</span> представляє зібрану гейм аналітику</h1>
 </header>
+
+<div id="particles">
+    <div id="particles-background" class="vertical-centered-box"></div>
+    <div id="particles-foreground" class="vertical-centered-box"></div>
+</div>
+
+<script src="/static/js/particle-background.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/chart.js"></script>
 
 <div class="search-result">
     <div class="selected-game-info">
@@ -23,8 +34,7 @@
         <div class="game-grid" id="gameGrid">
             {{range $index, $element := .games}}
             <div class="game-card {{if eq $index 0}}selected{{end}}" data-index="{{$index}}" data-name="{{.Data.Name}}"
-                data-price="{{if .Data.IsFree}}Безкоштовно{{else}}{{.Data.Price.Final}} {{.Data.Price.Currency}}{{end}}"
-                data-description="{{.Data.DetailedDescription}}">
+                data-price="{{if .Data.IsFree}}Безкоштовно{{else}}{{.Data.Price.Final}} {{.Data.Price.Currency}}{{end}}">
                 <img src="{{.Data.CardImage}}" alt="{{.Data.Name}}" />
             </div>
             {{end}}
@@ -61,6 +71,22 @@
                         <button class="move-btn right">&rarr;</button>
                     </div>
                 </div>
+                <div class="chart">
+                    <div>
+                        <input type="date" id="online-chart-from" />
+                        <input type="date" id="online-chart-to" />
+                        <select id="online-chart-period">
+                            <option value="h">Година</option>
+                            <option value="d">День</option>
+                            <option value="w">Тиждень</option>
+                            <option value="m">Місяць</option>
+                            <option value="*">Рік</option>
+                        </select>
+                    </div>
+                    <div>
+                        <canvas id="online-chart"></canvas>
+                    </div>
+                </div>
             </div>
             <div class="game-description">
                 <p id="gameDetailedDescription"></p>
@@ -68,6 +94,8 @@
         </div>
     </div>
 </div>
+
+
 
 <script src="/static/js/gallery.js"></script>
 <script src="/static/js/games.js"></script>

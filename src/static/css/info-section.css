@@ -19,7 +19,7 @@
     text-align: center;
     padding: 20px;
     min-width: 1080px;
-    min-height: 1920px;
+    min-height: 820px;
 }
 
 .info-section h2 {
@@ -59,4 +59,8 @@
     border-radius: 10px;
     backdrop-filter: blur(10px);
     height: fit-content;
+}
+
+.chart {
+    width: 610px;
 }

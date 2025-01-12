@@ -90,3 +90,13 @@ leftBtn.addEventListener('mouseenter', moveLeft);
 leftBtn.addEventListener('mouseleave', stopMovement);
 rightBtn.addEventListener('mouseenter', moveRight);
 rightBtn.addEventListener('mouseleave', stopMovement);
+
+gallery.addEventListener('wheel', function(e) {
+	e.preventDefault();
+	if (e.deltaY > 0) {
+		galleryWrapLeft();
+	}
+	else {
+		galleryWrapRight();
+	}
+});
