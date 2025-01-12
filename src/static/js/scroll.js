@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const arrowBlock = document.querySelector('.arrow-block');
-    const gradientSection = document.getElementById('gradientSection');
+    const showMoreSection = document.querySelector('.arrow-block .arrow-label'); // Блок, до якого скролимо
 
     arrowBlock.addEventListener('click', () => {
-        if (gradientSection) {
-            gradientSection.scrollIntoView({
-                behavior: 'smooth',
+        if (showMoreSection) {
+            showMoreSection.scrollIntoView({
+                behavior: 'smooth', // Плавна анімація
+                block: 'start'     // Блок відображається зверху
             });
         }
     });

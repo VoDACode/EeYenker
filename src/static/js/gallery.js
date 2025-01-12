@@ -1,5 +1,4 @@
 var gallery = document.querySelector('.gallery');
-var galleryItems = document.querySelectorAll('.gallery-item');
 var numOfItems = gallery.children.length;
 var itemWidth = 23; // percent: as set in css
 
@@ -14,6 +13,7 @@ var scrollRate = 0.2;
 var left;
 
 function selectItem(e) {
+	var galleryItems = document.querySelectorAll('.gallery-item');
 	if (e.target.classList.contains('active')) return;
 	
 	featured.style.backgroundImage = e.target.style.backgroundImage;

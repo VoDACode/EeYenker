@@ -1,11 +1,20 @@
 .arrow-block {
     position: absolute;
-    bottom: 10px;
+    bottom: -40px;
     right: 60px;
     height: 200px;
     width: 70px;
     cursor: pointer;
     z-index: 5;
+}
+
+.arrow-label {
+    margin-top: 10px; 
+    font-size: 16px;  
+    font-weight: bold;
+    color: #ffffff00;     
+    position: relative;
+    top: 25px;       
 }
 
 .show-more{

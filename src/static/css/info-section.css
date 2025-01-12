@@ -1,4 +1,4 @@
-.info-section {
+.info-section { 
     position: relative;
     overflow: hidden; 
 }
@@ -39,6 +39,24 @@
     color: rgb(213, 213, 213);
 }
 
+.game-details{
+    display: grid;
+    margin-top: 20px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.game-description,
+.game-description * {
+    font-size: 16px !important;
+    text-align: left;
+    color: white;
+}
+
 .game-description {
-    font-size: 1.2em;
+    background-color: #271c27;
+    padding: 30px;
+    margin: 0;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    height: fit-content;
 }
