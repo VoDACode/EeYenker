@@ -24,13 +24,21 @@
 
 .info-section h2 {
     font-size: 4rem;
-    color: #fff;
-    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    color: rgb(213, 213, 213);
+    margin-bottom: -10px;
     position: relative;
     z-index: 5;
 }
 
 .info-section p {
-    font-size: 1.2rem;
-    color: #ccc;
+    font-size: 1.4rem;
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    color: rgb(213, 213, 213);
+}
+
+.game-description {
+    font-size: 1.2em;
 }

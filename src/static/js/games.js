@@ -60,16 +60,39 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
 
-    // Змінюємо виклик у setGameDetails
     const setGameDetails = (index) => {
-        const card = gameCards[index % gameCards.length]; // Зациклення індекса
-        
+        const card = gameCards[index % gameCards.length];
+        const gameInfo = games[index % games.length];
+    
         gameNameElements.forEach((element) => {
             element.textContent = card.dataset.name;
         });
         gamePriceElement.textContent = `Ціна: ${card.dataset.price}`;
+    
+        // Оновлення опису
+        const detailedDescriptionElement = document.getElementById("gameDetailedDescription");
+        detailedDescriptionElement.innerHTML = card.dataset.description || "Опис гри недоступний.";
+    
         changeBackground(card.dataset.name);
-    };
+    
+        // Оновлення зображень
+        featured.style.backgroundImage = `url(${gameInfo.data.screenshots[0].path_full})`;
+        const screenshotGallery = document.getElementById("screenshot-gallery");
+        screenshotGallery.innerHTML = "";
+    
+        gameInfo.data.screenshots.forEach((screenshot, i) => {
+            const itemWrapper = document.createElement("div");
+            itemWrapper.className = "item-wrapper";
+    
+            const galleryItem = document.createElement("figure");
+            galleryItem.className = `gallery-item image-holder r-3-2 ${i === 0 ? "active" : ""} transition`;
+            galleryItem.style.backgroundImage = `url(${screenshot.path_full})`;
+            galleryItem.addEventListener("click", (e) => selectItem(e));
+    
+            itemWrapper.appendChild(galleryItem);
+            screenshotGallery.appendChild(itemWrapper);
+        });
+    };    
 
     async function fetchAggregatedData(appId, from, to, detail) {
         const baseUrl = '/api/aggregated_data';
